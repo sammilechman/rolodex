@@ -1,11 +1,8 @@
 FirstRoutes::Application.routes.draw do
-  #resources :users
-  get 'users(.:format)' => 'users#index', :as => 'users'
-  post 'users(.:format)' => 'users#create'
-  get 'users/new(.:format)' => 'users#new', :as => 'new_user'
-  get 'users/:id/edit(.:format)' => 'users#edit', :as => 'edit_user'
-  get 'users/:id(.:format)' => 'users#show', :as => 'user'
-  patch 'users/:id(.:format)' => 'users#update'
-  post 'users/:id(.:format)' => 'users#update'
-  delete 'users/:id(.:format)' => 'users#destroy'
+  resources :users, :only => [:create, :destroy, :index, :show, :update] do
+    resources :contacts, :only => [:index]
+  end
+
+  resources :contacts, :only => [:create, :destroy, :show, :update]
+  resources :contact_shares, :only => [:create, :destroy]
 end

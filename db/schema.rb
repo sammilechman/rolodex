@@ -11,13 +11,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140422182506) do
+ActiveRecord::Schema.define(version: 20140422235743) do
 
-  create_table "users", force: true do |t|
-    t.string   "name",       null: false
-    t.string   "email",      null: false
+  create_table "comments", force: true do |t|
+    t.string   "body",                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "author_id",   default: 0, null: false
+    t.integer  "object_id"
+    t.string   "object_type"
+  end
+
+  create_table "contact_shares", force: true do |t|
+    t.integer  "contact_id", null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contact_shares", ["contact_id", "user_id"], name: "index_contact_shares_on_contact_id_and_user_id", unique: true
+  add_index "contact_shares", ["contact_id"], name: "index_contact_shares_on_contact_id"
+  add_index "contact_shares", ["user_id"], name: "index_contact_shares_on_user_id"
+
+  create_table "contacts", force: true do |t|
+    t.string   "name",                       null: false
+    t.string   "email",                      null: false
+    t.integer  "user_id",                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "liked",      default: false
+  end
+
+  add_index "contacts", ["user_id"], name: "index_contacts_on_user_id"
+
+  create_table "users", force: true do |t|
+    t.string   "email",                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "username",   default: "", null: false
   end
 
 end
